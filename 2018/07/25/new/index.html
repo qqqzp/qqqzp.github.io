@@ -10,6 +10,12 @@
 
     <!--Description-->
     
+        <meta name="description" content="## 
+new 和 malloc 内部的实现方式有什么区别？
+new 的功能是在堆区新建一个对象，并返回该对象的指针。
+所谓的【新建对象】的意思就是，将调用该类的构造函数，因为如果不构造的话，就不能称之为一个对象。
+而 malloc 只是机械的分配一块内存，如果用 mallco 在堆区创建一个对象的">
+    
 
     <!--Author-->
     
@@ -18,7 +24,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Qzp"/>
+        <meta property="og:title" content="NEW和malloc"/>
     
 
     <!--Open Graph Description-->
@@ -29,7 +35,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
     
 
     <!--Page Cover-->
@@ -40,7 +46,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2018/7 - Qzp</title>
+    <title>NEW和malloc - Qzp</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -127,9 +133,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -137,61 +141,104 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2018/7</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2018/07/25/new/">
-        <span class="archive-date">
-            Jul 2018
-        </span>
-        NEW和malloc
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/07/25/new/">
+                NEW和malloc
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-25</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>## </p>
+<p>new 和 malloc 内部的实现方式有什么区别？</p>
+<p>new 的功能是在堆区新建一个对象，并返回该对象的指针。</p>
+<p>所谓的【新建对象】的意思就是，将调用该类的构造函数，因为如果不构造的话，就不能称之为一个对象。</p>
+<p>而 malloc 只是机械的分配一块内存，如果用 mallco 在堆区创建一个对象的话，是不会调用构造函数的。</p>
+<p>严格说来用 malloc 不能算是新建了一个对象，只能说是分配了一块与该类对象匹配的内存而已，然后强行把它解释为【这是一个对象】，按这个逻辑来，也不存在构造函数什么事。</p>
+<p>同样的，用 delete 去释放一个堆区的对象，会调用该对象的析构函数。</p>
+<p>用 free 去释放一个堆区的对象，不会调用该对象的析构函数。</p>
+<p>做个简单的实验即可明了:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;malloc.h&gt;
+
+class TEST
+{
+private:
+    int num1;
+    int num2;
+public:
+    TEST()
+    {
+        num1 = 10;
+        num2 = 20;
+    }
+    void Print()
+    {
+        std::cout &lt;&lt; num1 &lt;&lt; &quot; &quot; &lt;&lt; num2 &lt;&lt; std::endl;
+    }
+};
+
+int main(void)
+{
+    // 用malloc()函数在堆区分配一块内存空间，然后用强制类型转换将该块内存空间
+    // 解释为是一个TEST类对象，这不会调用TEST的默认构造函数
+    TEST * pObj1 = (TEST *)malloc(sizeof(TEST));
+    pObj1-&gt;Print();
+
+    // 用new在堆区创建一个TEST类的对象，这会调用TEST类的默认构造函数
+    TEST * pObj2 = new TEST;
+    pObj2-&gt;Print();
+
+    return 0;
+}
+/*
+运行结果：
+
+-----------------------------
+-842150451 -842150451       |
+10 20                       |
+请按任意键继续. . .         |
+-----------------------------
+
+我们可以看到pObj1所指的对象中，字段num1与num2都是垃圾值
+而pObj2所指的对象中，字段num1与num2显然是经过了构造后的值
+*/`
+</code></pre>
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2018/06/19/test/">
-        <span class="archive-date">
-            Jun 2018
-        </span>
-        测试
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/07/08/嘻嘻嘻/">
-        <span class="archive-date">
-            Jul 2018
-        </span>
-        嘻嘻嘻嘻
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/06/23/ddl/">
-        <span class="archive-date">
-            Jun 2018
-        </span>
-        DDL
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/06/19/hello-world/">
-        <span class="archive-date">
-            Jun 2018
-        </span>
-        Hello World
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 
