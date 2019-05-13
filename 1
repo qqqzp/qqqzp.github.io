@@ -1,0 +1,18 @@
+v-bind，它的用法是后面加冒号，跟上html元素的attributions，例如：
+
+<p v-bind:class="classed">
+
+当data.classed发生变化的时候，class属性也发生变化，这非常适合用在通过css来实现动画效果的场合。除了class，其他大部分html原始的属性都可以通过这种方式来绑定，而且为了方便，它可以直接缩写成冒号形式，例如：
+
+var app = Vue({
+  el: '#app',
+  template: '<img :src="src">',
+  data: {
+    src: '',
+  },
+  beforeMount() {
+    fetch(...).then(...).then(res => this.src = res.src) // 这里修改了data.src
+  },
+})
+
+v-model主要是用在表单元素中，它实现了双向绑定。双向绑定大家都非常熟了，简单的说就是默认情况下，它跟上面两种情况的数据绑定是一样的，实例的data.name发生变化的时候，对应的试图中也会发生变化。但是v-model绑定后，它还会反过来，在input中手动输入新的内容，会反过来修改data.name的值，如果在视图中其他地方使用到了data.name，那么这个地方就会因为data.name的变化而变化，从而实现关联动态效果。下面来举个栗子：
